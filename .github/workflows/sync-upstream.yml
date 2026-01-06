@@ -30,6 +30,19 @@ jobs:
           git remote add upstream https://github.com/redis/redis.git
           git fetch upstream unstable
 
+      - name: Debug token permissions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "=== Token Status ==="
+          gh auth status
+          echo ""
+          echo "=== API Rate Limit (shows scopes) ==="
+          curl -sS -H "Authorization: token $GH_TOKEN" https://api.github.com/rate_limit -I | grep -i "x-oauth-scopes"
+          echo ""
+          echo "=== Repo Permissions ==="
+          gh api repos/${{ github.repository }} --jq '.permissions'
+
       - name: Check for new commits
         id: check
         run: |
