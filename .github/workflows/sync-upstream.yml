@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           fetch-depth: 0
-          token: ${{ secrets.REDIS_PAT }}
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Configure git
         run: |
@@ -32,7 +32,7 @@ jobs:
 
       - name: Debug token permissions
         env:
-          GH_TOKEN: ${{ secrets.REDIS_PAT }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           echo "=== Token Status ==="
           gh auth status
@@ -59,7 +59,7 @@ jobs:
       - name: Create sync branch and PR
         if: steps.check.outputs.has_updates == 'true'
         env:
-          GH_TOKEN: ${{ secrets.REDIS_PAT }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           BEHIND_COUNT: ${{ steps.check.outputs.behind_count }}
         run: |
           BRANCH_NAME="sync-upstream-$(date +%Y-%m-%d)"
