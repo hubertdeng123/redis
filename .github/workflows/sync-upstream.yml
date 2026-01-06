@@ -50,12 +50,13 @@ jobs:
           BEHIND_COUNT: ${{ steps.check.outputs.behind_count }}
         run: |
           BRANCH_NAME="sync-upstream-$(date +%Y-%m-%d)"
-          git checkout -b "$BRANCH_NAME"
-          git merge upstream/unstable --no-edit
+
+          # Create branch pointing to upstream (no merge - PR will show the diff)
+          git checkout -b "$BRANCH_NAME" upstream/unstable
           git push origin "$BRANCH_NAME"
 
           # Generate commit list for PR body
-          COMMIT_LIST=$(git log --oneline origin/unstable..HEAD | head -50)
+          COMMIT_LIST=$(git log --oneline origin/unstable.."$BRANCH_NAME" | head -50)
 
           # Create PR
           gh pr create \
