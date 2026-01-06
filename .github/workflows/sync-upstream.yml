@@ -59,7 +59,7 @@ jobs:
       - name: Create sync branch and PR
         if: steps.check.outputs.has_updates == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REDIS_PAT }}
           BEHIND_COUNT: ${{ steps.check.outputs.behind_count }}
         run: |
           BRANCH_NAME="sync-upstream-$(date +%Y-%m-%d)"
