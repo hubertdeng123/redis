@@ -67,11 +67,10 @@ jobs:
           # Create branch pointing to upstream (no merge - PR will show the diff)
           git checkout -b "$BRANCH_NAME" upstream/unstable
 
-          # Restore our fork's .github/workflows to avoid permission issues
-          git checkout origin/unstable -- .github/workflows/
-          git commit -m "Preserve fork's workflow files"
-
           git push origin "$BRANCH_NAME"
+
+          # Wait for GitHub to process the new branch
+          sleep 10
 
           # Generate commit list for PR body
           COMMIT_LIST=$(git log --oneline origin/unstable.."$BRANCH_NAME" | head -50)
