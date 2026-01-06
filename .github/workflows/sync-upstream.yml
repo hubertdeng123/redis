@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure git
         run: |
@@ -32,13 +32,13 @@ jobs:
 
       - name: Debug token permissions
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "=== Token Status ==="
           gh auth status
           echo ""
           echo "=== API Rate Limit (shows scopes) ==="
-          curl -sS -H "Authorization: token $GH_TOKEN" https://api.github.com/rate_limit -I | grep -i "x-oauth-scopes"
+          curl -sS -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/rate_limit -I | grep -i "x-oauth-scopes"
           echo ""
           echo "=== Repo Permissions ==="
           gh api repos/${{ github.repository }} --jq '.permissions'
@@ -59,7 +59,7 @@ jobs:
       - name: Create sync branch and PR
         if: steps.check.outputs.has_updates == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BEHIND_COUNT: ${{ steps.check.outputs.behind_count }}
         run: |
           BRANCH_NAME="sync-upstream-$(date +%Y-%m-%d)"
