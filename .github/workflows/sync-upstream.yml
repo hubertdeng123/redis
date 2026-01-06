@@ -32,7 +32,7 @@ jobs:
 
       - name: Debug token permissions
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REDIS_PAT }}
         run: |
           echo "=== Token Status ==="
           gh auth status
