@@ -69,14 +69,12 @@ jobs:
 
           git push origin "$BRANCH_NAME"
 
-          # Wait for GitHub to process the new branch
-          sleep 10
-
           # Generate commit list for PR body
           COMMIT_LIST=$(git log --oneline origin/unstable.."$BRANCH_NAME" | head -50)
 
           # Create PR
           gh pr create \
+            --repo "${{ github.repository }}" \
             --title "Sync upstream Redis - $(date +%Y-%m-%d)" \
             --body "## Upstream Sync
 
